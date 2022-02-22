@@ -21,15 +21,25 @@ for filename in os.listdir('data'):
         f = open('data/' + filename, 'r')
 
         docs = json.loads(f.read())
+        size = len(docs)
 
-        for doc in docs:
+        minVal = 19500
+        maxVal = 39000
 
-            id = doc.pop('id', None)
+        for idx, doc in enumerate(docs):
 
-            if id:
+            if (idx > minVal and idx <= maxVal):
 
-                db.collection(collectionName).document(id).set(doc, merge=True)
+                id = doc.pop('id', None)
 
-            else:
+                index = idx + 1
 
-                db.collection(collectionName).add(doc)
+                print( "Uploaded " + str(index) + " out of " + str(maxVal), end="\r")
+
+                if id:
+
+                    db.collection(collectionName).document(id).set(doc, merge=True)
+
+                else:
+
+                    db.collection(collectionName).add(doc)
